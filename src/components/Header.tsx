@@ -4,7 +4,7 @@ import {SafeAreaView} from 'react-native-safe-area-context'
 export default function Header() {
     return (
 
-        <SafeAreaView style={styles.header}>
+        <SafeAreaView >
 
             <Text style={styles.textHeader}>Planificador de Gastos</Text>
 
@@ -14,9 +14,7 @@ export default function Header() {
 }
 
 const styles = StyleSheet.create({
-    header:{
-        backgroundColor:'#3b82f6'
-    },
+    
     textHeader:{
         textAlign:'center',
         fontSize:35,
@@ -24,7 +22,6 @@ const styles = StyleSheet.create({
         textTransform:'uppercase',
         fontWeight:'bold',
         paddingTop:5,
-        paddingBottom: 20
     },
 
 })
