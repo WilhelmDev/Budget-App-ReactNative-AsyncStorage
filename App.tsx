@@ -5,6 +5,7 @@ import { SafeAreaView} from 'react-native-safe-area-context'
 import Header from './src/components/Header';
 import NewBudget from './src/components/NewBudget';
 import { newBudget } from './interfaces';
+import BudgetControl from './src/components/BudgetControl';
 
 export default function App() {
 	const [isValidBudget, setIsValidBudget] = useState(false)
@@ -12,9 +13,6 @@ export default function App() {
 	const handleNewBudget:newBudget = (budget) => {
 		if (budget > 0) {
 			setIsValidBudget(true)
-			setTimeout(() => {
-				console.log(isValidBudget)
-			}, 100);
 		} else {
 			Alert.alert(
 				'Error','El presupuesto no puede ser 0 o menor'
@@ -32,7 +30,9 @@ return (
 
 				<Header />
 
-				<NewBudget handleNewBudget={handleNewBudget}/>
+				{isValidBudget 
+				? <BudgetControl />
+				: <NewBudget handleNewBudget={handleNewBudget}/>}
 
 			</SafeAreaView>
 
