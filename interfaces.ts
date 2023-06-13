@@ -10,4 +10,7 @@ export interface BudgetControlProps{
     expenses: never | Spendt[]
 }
 
-
+export type Handler = () => void;
+export interface FormNewSpendProps {
+    handleModal: Handler
+}
