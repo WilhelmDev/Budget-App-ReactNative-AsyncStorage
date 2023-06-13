@@ -6,13 +6,16 @@ import Header from './src/components/Header';
 import NewBudget from './src/components/NewBudget';
 import { newBudget } from './interfaces';
 import BudgetControl from './src/components/BudgetControl';
+import {Spendt} from './interfaces'
 
 export default function App() {
 	const [isValidBudget, setIsValidBudget] = useState(false)
-
+	const [budget, setBudget] = useState(0)
+	const [expenses, setExpenses] = useState<Spendt[] | never>([])
 	const handleNewBudget:newBudget = (budget) => {
 		if (budget > 0) {
 			setIsValidBudget(true)
+			setBudget(budget)
 		} else {
 			Alert.alert(
 				'Error','El presupuesto no puede ser 0 o menor'
@@ -31,7 +34,7 @@ return (
 				<Header />
 
 				{isValidBudget 
-				? <BudgetControl />
+				? <BudgetControl budget={budget} expenses={expenses}/>
 				: <NewBudget handleNewBudget={handleNewBudget}/>}
 
 			</SafeAreaView>

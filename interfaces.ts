@@ -4,4 +4,10 @@ export interface NewBudgetProps {
     handleNewBudget: newBudget;
 }
 
+export type Spendt = {id:number, quantity:number}
+export interface BudgetControlProps{
+    budget:number,
+    expenses: never | Spendt[]
+}
+
 
