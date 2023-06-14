@@ -1,8 +1,9 @@
-import { View, Text, Button, Pressable, TextInput } from 'react-native'
+import { View, Text, Button, Pressable, TextInput, StyleSheet } from 'react-native'
 import React, { useState } from 'react'
 import { SafeAreaView} from 'react-native-safe-area-context'
 import { FormNewSpendProps } from '../../interfaces'
 import { Picker } from '@react-native-picker/picker'
+import globalStyles from '../styles'
 
 export default function FormSpendt({
     handleModal
@@ -10,28 +11,35 @@ export default function FormSpendt({
         const [category, setCategory] = useState('')
 
         return (
-            <SafeAreaView>
+            <SafeAreaView style={styles.container}>
                 <View>
 
-                    <Pressable onPress={handleModal}>
-                        <Text>Cancelar</Text>
+                    <Pressable style={styles.btnCancel}
+                    onLongPress={handleModal}>
+                        <Text style={styles.btnCancelText}>Cancelar</Text>
                     </Pressable>
 
                 </View>
 
-                <View>
-                    <Text>Nombre Gasto</Text>
-                    <TextInput placeholder='Nombre del gasto. ej. Comida'/>
+                <View style={styles.form}>
+                    <Text style={styles.title}>Nuevo Gasto</Text>
+
+                    <View style={styles.field}>
+                        <Text style={styles.label}>Nombre Gasto</Text>
+                        <TextInput style={styles.input}
+                        placeholder='Nombre del gasto. ej. Comida'/>
+                    </View>
                 
 
-                    <View>
-                        <Text>Cantidad Gasto</Text>
-                        <TextInput placeholder='Cantidad del gasto. ej. 300' keyboardType='numeric'/>
+                    <View style={styles.field}>
+                        <Text style={styles.label}>Cantidad Gasto</Text>
+                        <TextInput style={styles.input}
+                        placeholder='Cantidad del gasto. ej. 300' keyboardType='numeric'/>
                     </View>
 
-                    <View>
-                        <Text>Categoria Gasto</Text>
-                        <Picker
+                    <View style={styles.field}>
+                        <Text style={styles.label}>Categoria Gasto</Text>
+                        <Picker style={styles.input}
                         selectedValue={category}
                         onValueChange={(itemValue, itemIndex) => setCategory(itemValue)}
                         >
@@ -45,11 +53,67 @@ export default function FormSpendt({
                         </Picker>
                     </View>
 
-                    <Pressable>
-                        <Text>Agregar Gasto</Text>
+                    <Pressable style={styles.btnSubmit}>
+                        <Text style={styles.btnSubmitText}>Agregar Gasto</Text>
                     </Pressable>
                 </View>
 
             </SafeAreaView>
         )
 }
+
+const styles = StyleSheet.create({
+    container:{
+        backgroundColor:'#3453b7',
+        flex:1,
+    },
+    form:{
+        ...globalStyles.container
+    },
+    title:{
+        textAlign:'center',
+        fontSize:28,
+        marginBottom:30,
+        color:'#64748b',
+    },
+    field:{
+        marginVertical:10
+    },
+    label:{
+        color:'#64748b',
+        fontSize:18,
+        fontWeight:'bold'
+    },
+    input:{
+        backgroundColor:'#f5f5f5',
+        padding:10,
+        borderRadius:10,
+    },
+    btnSubmit:{
+        backgroundColor:'#516ecd',
+        padding:12,
+        marginTop:20,
+        borderRadius:10
+    },
+    btnSubmitText:{
+        textAlign:'center',
+        textTransform:'uppercase',
+        fontWeight:'bold',
+        color:'#fff'
+    },
+    btnCancel:{
+        backgroundColor: '#243a80',
+        paddingHorizontal:10,
+        paddingVertical:15,
+        marginTop:20,
+        marginHorizontal:10,
+        borderRadius:10
+
+    },
+    btnCancelText:{
+        fontWeight:'bold',
+        color:'#fff',
+        textAlign:'center',
+        textTransform:'uppercase'
+    },
+})

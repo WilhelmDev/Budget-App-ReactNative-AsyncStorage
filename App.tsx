@@ -47,13 +47,14 @@ return (
 			</SafeAreaView>
 
 			{modal && (
-				<Modal visible={modal} animationType='slide' statusBarTranslucent={true}>
+				<Modal visible={modal} animationType='slide' onRequestClose={handleModal}
+				statusBarTranslucent={true}>
 					<FormSpendt handleModal={handleModal}/>
 				</Modal>
 			)}
 
 			{isValidBudget && (
-				<Pressable onPress={handleModal}>
+				<Pressable onPressOut={() => handleModal()}>
 					<Image style={styles.image}
 					source={require('./src/img/nuevo-gasto.png')} />
 				</Pressable>
