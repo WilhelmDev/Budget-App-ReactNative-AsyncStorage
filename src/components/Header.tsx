@@ -1,20 +1,21 @@
-import { StyleSheet, Text, View } from 'react-native'
-import {SafeAreaView} from 'react-native-safe-area-context'
+import { StyleSheet, Text, View, StatusBar} from 'react-native'
 
 export default function Header() {
     return (
 
-        <SafeAreaView >
+        <View style={styles.headerContainer} >
 
             <Text style={styles.textHeader}>Planificador de Gastos</Text>
 
-        </SafeAreaView>
+        </View>
 
     )
 }
 
 const styles = StyleSheet.create({
-    
+    headerContainer:{
+        paddingTop: StatusBar.currentHeight
+    },
     textHeader:{
         textAlign:'center',
         fontSize:35,

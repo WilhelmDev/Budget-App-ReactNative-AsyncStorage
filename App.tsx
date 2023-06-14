@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import { useState } from "react";
-import { Alert, Image, Modal, Pressable, StyleSheet, Text, View } from 'react-native';
+import { Alert, Image, Modal, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView} from 'react-native-safe-area-context'
 import Header from './src/components/Header';
 import NewBudget from './src/components/NewBudget';
@@ -9,6 +9,7 @@ import BudgetControl from './src/components/BudgetControl';
 import {Spendt} from './interfaces'
 import FormSpendt from './src/components/FormSpendt';
 import { idGenerator } from './src/helpers';
+import ListExpenses from './src/components/ListExpenses';
 
 export default function App() {
 	const [isValidBudget, setIsValidBudget] = useState(false)
@@ -51,17 +52,26 @@ return (
 	<View style={styles.containerApp}>
 		<StatusBar style='auto' translucent={true}/>
 
-		<View style={styles.container}>
+		<View >
 
-			<SafeAreaView style={styles.header}>
+			<ScrollView contentContainerStyle={{paddingBottom: 50}} >
 
-				<Header />
+					<View style={styles.header}>
 
-				{isValidBudget 
-				? <BudgetControl budget={budget} expenses={expenses}/>
-				: <NewBudget handleNewBudget={handleNewBudget}/>}
+						<Header />
 
-			</SafeAreaView>
+						{isValidBudget 
+						? <BudgetControl budget={budget} expenses={expenses}/>
+						: <NewBudget handleNewBudget={handleNewBudget}/>}
+
+					</View>
+
+					{isValidBudget && (
+						<ListExpenses expenses={expenses} />
+					)}
+
+			</ScrollView>
+
 
 			{modal && (
 				<Modal visible={modal} animationType='slide' onRequestClose={handleModal}
@@ -71,11 +81,11 @@ return (
 			)}
 
 			{isValidBudget && (
-				<Pressable onPressOut={() => handleModal()}>
-					<Image style={styles.image}
-					source={require('./src/img/nuevo-gasto.png')} />
-				</Pressable>
-			)}
+					<Pressable onPressOut={() => handleModal()}>
+						<Image style={styles.image}
+						source={require('./src/img/nuevo-gasto.png')} />
+					</Pressable>
+				)}
 
 		</View>
 
@@ -89,16 +99,17 @@ const styles = StyleSheet.create({
 		backgroundColor: '#f5f5f5',
 	},
 	container: {
-		
+
 	},
 	header:{
-		backgroundColor:'#3b82f6'
+		backgroundColor:'#3b82f6',
+		marginBottom:60
 	},
 	image:{
 		height:60,
 		width:60,
 		position:'absolute',
-		top:100,
+		bottom:10,
 		right:20
 	}
 });

@@ -16,3 +16,10 @@ export interface FormNewSpendProps {
     handleModal: Handler,
     handleSpendt: (spend:Spendt) => void
 }
+export interface ListExpensesProps {
+    expenses:StateExpenses
+}
+
+export interface SpendtItemProps {
+    spendt:Spendt
+}
