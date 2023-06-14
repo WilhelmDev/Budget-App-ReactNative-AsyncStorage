@@ -4,13 +4,15 @@ export interface NewBudgetProps {
     handleNewBudget: newBudget;
 }
 
-export type Spendt = {id:number, quantity:number}
+export type Spendt = { id?:string ,name:string, quantity:number, category:Categorys}
+export type StateExpenses = Spendt[] | never
 export interface BudgetControlProps{
     budget:number,
     expenses: never | Spendt[]
 }
-
+export type Categorys = '' | 'earns' | 'food' | 'house' | 'others' | 'hobbys' | 'suscriptions'
 export type Handler = () => void;
 export interface FormNewSpendProps {
-    handleModal: Handler
+    handleModal: Handler,
+    handleSpendt: (spend:Spendt) => void
 }

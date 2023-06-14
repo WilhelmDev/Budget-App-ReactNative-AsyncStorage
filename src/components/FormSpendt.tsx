@@ -1,14 +1,25 @@
-import { View, Text, Button, Pressable, TextInput, StyleSheet } from 'react-native'
+import { View, Text, Pressable, TextInput, StyleSheet } from 'react-native'
 import React, { useState } from 'react'
 import { SafeAreaView} from 'react-native-safe-area-context'
-import { FormNewSpendProps } from '../../interfaces'
+import { Categorys, FormNewSpendProps } from '../../interfaces'
 import { Picker } from '@react-native-picker/picker'
 import globalStyles from '../styles'
 
 export default function FormSpendt({
-    handleModal
+    handleModal, handleSpendt
     }:FormNewSpendProps) {
-        const [category, setCategory] = useState('')
+        const [name, setName] = useState('')
+        const [quantity, setQuantity] = useState('')
+        const [category, setCategory] = useState<Categorys>('')
+
+        const handleSubmit = () => {
+            const newSpendt = {
+                name,
+                category,
+                quantity: Number(quantity)
+            }
+            handleSpendt(newSpendt)
+        }
 
         return (
             <SafeAreaView style={styles.container}>
@@ -26,14 +37,14 @@ export default function FormSpendt({
 
                     <View style={styles.field}>
                         <Text style={styles.label}>Nombre Gasto</Text>
-                        <TextInput style={styles.input}
+                        <TextInput style={styles.input} value={name} onChangeText={setName}
                         placeholder='Nombre del gasto. ej. Comida'/>
                     </View>
                 
 
                     <View style={styles.field}>
                         <Text style={styles.label}>Cantidad Gasto</Text>
-                        <TextInput style={styles.input}
+                        <TextInput style={styles.input} value={quantity} onChangeText={setQuantity}
                         placeholder='Cantidad del gasto. ej. 300' keyboardType='numeric'/>
                     </View>
 
@@ -53,7 +64,8 @@ export default function FormSpendt({
                         </Picker>
                     </View>
 
-                    <Pressable style={styles.btnSubmit}>
+                    <Pressable onPress={handleSubmit}
+                    style={styles.btnSubmit}>
                         <Text style={styles.btnSubmitText}>Agregar Gasto</Text>
                     </Pressable>
                 </View>

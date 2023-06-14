@@ -4,15 +4,16 @@ import { Alert, Image, Modal, Pressable, StyleSheet, Text, View } from 'react-na
 import { SafeAreaView} from 'react-native-safe-area-context'
 import Header from './src/components/Header';
 import NewBudget from './src/components/NewBudget';
-import { newBudget } from './interfaces';
+import { StateExpenses, newBudget } from './interfaces';
 import BudgetControl from './src/components/BudgetControl';
 import {Spendt} from './interfaces'
 import FormSpendt from './src/components/FormSpendt';
+import { idGenerator } from './src/helpers';
 
 export default function App() {
 	const [isValidBudget, setIsValidBudget] = useState(false)
 	const [budget, setBudget] = useState(0)
-	const [expenses, setExpenses] = useState<Spendt[] | never>([])
+	const [expenses, setExpenses] = useState<StateExpenses>([])
 	const [modal, setModal] = useState(false)
 
 	const handleNewBudget:newBudget = (budget) => {
@@ -28,6 +29,22 @@ export default function App() {
 
 	const handleModal = () => {
 		setModal(!modal)
+	}
+
+	const handleSpendt = (spendt:Spendt) => {
+		//*Validation
+		if (Object.values(spendt).includes('') || Object.values(spendt).includes(0)) {
+			Alert.alert(
+				'Error',
+				'Todos Los Campos son Obligatorios'
+			)
+			return
+		}
+
+		//*Sync State and close modal
+		spendt.id= idGenerator()
+		setExpenses([...expenses, spendt])
+		handleModal()
 	}
 
 return (
@@ -49,7 +66,7 @@ return (
 			{modal && (
 				<Modal visible={modal} animationType='slide' onRequestClose={handleModal}
 				statusBarTranslucent={true}>
-					<FormSpendt handleModal={handleModal}/>
+					<FormSpendt handleModal={handleModal} handleSpendt={handleSpendt}/>
 				</Modal>
 			)}
 
