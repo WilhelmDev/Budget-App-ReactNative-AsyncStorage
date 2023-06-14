@@ -60,6 +60,7 @@ export default function FormSpendt({
                             <Picker.Item label='Casa' value='house'/>
                             <Picker.Item label='Gastos varios' value='others'/>
                             <Picker.Item label='Ocio' value='hobbys'/>
+                            <Picker.Item label='Salud' value='health'/>
                             <Picker.Item label='Suscripciones' value='suscriptions'/>
                         </Picker>
                     </View>

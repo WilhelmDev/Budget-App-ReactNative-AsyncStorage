@@ -109,7 +109,7 @@ const styles = StyleSheet.create({
 		height:60,
 		width:60,
 		position:'absolute',
-		bottom:10,
+		bottom:20,
 		right:20
 	}
 });
