@@ -3,6 +3,7 @@ import {useState, useEffect} from 'react'
 import globalStyles from '../styles'
 import { BudgetControlProps } from '../../interfaces'
 import { moneyFormatter } from '../helpers'
+import CircularProgress from 'react-native-circular-progress-indicator'
 
 export default function BudgetControl({
     budget, expenses
@@ -21,8 +22,7 @@ export default function BudgetControl({
         return (
         <View style={styles.container}>
             <View style={styles.centerComp}>
-                <Image style={styles.img}
-                source={require('../img/grafico.jpg')}/>
+                <CircularProgress value={50}/>
             </View>
 
             <View style={styles.textContainer}>
