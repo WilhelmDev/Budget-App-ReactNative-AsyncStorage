@@ -1,10 +1,9 @@
 import { StatusBar } from 'expo-status-bar';
 import { useState } from "react";
 import { Alert, Image, Modal, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
-import { SafeAreaView} from 'react-native-safe-area-context'
 import Header from './src/components/Header';
 import NewBudget from './src/components/NewBudget';
-import { StateExpenses, newBudget } from './interfaces';
+import { DeleteSpendtHandler, EditSpendtHandler, StateExpenses, StateSpendt, newBudget } from './interfaces';
 import BudgetControl from './src/components/BudgetControl';
 import {Spendt} from './interfaces'
 import FormSpendt from './src/components/FormSpendt';
@@ -16,6 +15,7 @@ export default function App() {
 	const [budget, setBudget] = useState(0)
 	const [expenses, setExpenses] = useState<StateExpenses>([])
 	const [modal, setModal] = useState(false)
+	const [spendt, setSpendt] = useState<StateSpendt>()
 
 	const handleNewBudget:newBudget = (budget) => {
 		if (budget > 0) {
@@ -34,7 +34,7 @@ export default function App() {
 
 	const handleSpendt = (spendt:Spendt) => {
 		//*Validation
-		if (Object.values(spendt).includes('') || Object.values(spendt).includes(0)) {
+		if ([spendt.name, spendt.category].includes('') || spendt.quantity === 0) {
 			Alert.alert(
 				'Error',
 				'Todos Los Campos son Obligatorios'
@@ -42,11 +42,49 @@ export default function App() {
 			return
 		}
 
-		//*Sync State and close modal
-		spendt.id= idGenerator()
-		spendt.date= Date.now()
-		setExpenses([...expenses, spendt])
+		if (spendt.id) { //? update a spendt
+			const updatedExpenses = expenses.map((arritem) => arritem.id === spendt.id ? spendt : arritem)
+			setExpenses(updatedExpenses)
+			
+		} else { //? create a new spendt
+			//*Sync State and close modal
+			spendt.id= idGenerator()
+			spendt.date= Date.now()
+			setExpenses([...expenses, spendt])
+			handleEditSpendt(false)
+		}
+
 		handleModal()
+	}
+
+	const handleSetSpendt = (spendt:Spendt) =>{
+		setSpendt(spendt)
+	}
+
+	const handleEditSpendt:EditSpendtHandler = (edit, spendt) =>{
+		if(!edit) {
+			setSpendt({
+				name:'',
+				quantity:0,
+				category:'',
+				id: undefined,
+				date: undefined
+			})
+			return
+		}
+	}
+
+	const handleDeleteSpendt:DeleteSpendtHandler = (id) => {
+		Alert.alert(
+			'¿Desea eliminar este gasto?', 
+			'Esta acion es irreversible', 
+			[{text: 'no', style:'cancel'},
+			{text:'Si, eliminar', onPress: () => {
+				const updatedExpenses = expenses.filter((arritem) => arritem.id !== id)
+				setExpenses(updatedExpenses)
+				handleModal()
+				handleEditSpendt(false)
+			}}])
 	}
 
 return (
@@ -68,7 +106,7 @@ return (
 					</View>
 
 					{isValidBudget && (
-						<ListExpenses expenses={expenses} handleModal={handleModal} />
+						<ListExpenses expenses={expenses} handleModal={handleModal} handleSetSpendt={handleSetSpendt}/>
 					)}
 
 			</ScrollView>
@@ -77,7 +115,8 @@ return (
 			{modal && (
 				<Modal visible={modal} animationType='slide' onRequestClose={handleModal}
 				statusBarTranslucent={true}>
-					<FormSpendt handleModal={handleModal} handleSpendt={handleSpendt}/>
+					<FormSpendt handleModal={handleModal} spendt={spendt} handleDeleteSpendt={handleDeleteSpendt}
+					handleSpendt={handleSpendt} handleEditSpendt={handleEditSpendt}/>
 				</Modal>
 			)}
 

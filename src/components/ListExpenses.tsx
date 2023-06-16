@@ -3,7 +3,7 @@ import React, { useEffect } from 'react'
 import { ListExpensesProps } from '../../interfaces'
 import SpendtItem from './SpendtItem'
 
-export default function ListExpenses({expenses}:ListExpensesProps) {
+export default function ListExpenses({expenses, handleModal, handleSetSpendt}:ListExpensesProps) {
 
     return (
         <View style={styles.container}>
@@ -12,7 +12,7 @@ export default function ListExpenses({expenses}:ListExpensesProps) {
             {expenses.length === 0 
             ? <Text style={styles.empyList}>No hay Gastos</Text>
             : expenses.map( (spendt) => 
-                <SpendtItem  key={spendt.id} spendt={spendt}/>
+                <SpendtItem  key={spendt.id} spendt={spendt} handleModal={handleModal} handleSetSpendt={handleSetSpendt}/>
             )}
         </View>
     )

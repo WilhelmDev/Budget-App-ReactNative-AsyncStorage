@@ -1,10 +1,10 @@
-import { View, Text, StyleSheet, Image } from 'react-native'
+import { View, Text, StyleSheet, Image, Pressable } from 'react-native'
 import React from 'react'
 import { SpendtItemProps } from '../../interfaces'
 import globalStyles from '../styles'
 import { dateFormatter, moneyFormatter } from '../helpers'
 
-export default function SpendtItem({spendt}:SpendtItemProps) {
+export default function SpendtItem({spendt, handleModal, handleSetSpendt}:SpendtItemProps) {
     const diccionary = {
         earns: require('../img/icono_ahorro.png'),
         food: require('../img/icono_comida.png'),
@@ -17,29 +17,35 @@ export default function SpendtItem({spendt}:SpendtItemProps) {
     }
 
     const {name, quantity, date, category} = spendt
+
+    const handleActions= () => {
+        handleModal(),
+        handleSetSpendt(spendt)
+    }
     return (
-        <View style={styles.container}>
-            
-            <View style={styles.content}>
+        <Pressable onLongPress={handleActions}>
+            <View style={styles.container}>
+                
+                <View style={styles.content}>
 
-                <View style={styles.imgContainer}>
+                    <View style={styles.imgContainer}>
 
-                    <Image style={styles.img}
-                    source={diccionary[category]}/>
+                        <Image style={styles.img}
+                        source={diccionary[category]}/>
 
-                    <View style={styles.textContainer}>
-                        <Text style={styles.nameSpendt}>{name}</Text>
-                        <Text style={styles.date}>{dateFormatter(date)}</Text>
+                        <View style={styles.textContainer}>
+                            <Text style={styles.nameSpendt}>{name}</Text>
+                            <Text style={styles.date}>{dateFormatter(date)}</Text>
+                        </View>
+
                     </View>
+
+                    <Text style={styles.quantity}>{moneyFormatter(quantity)}</Text>
 
                 </View>
 
-                <Text style={styles.quantity}>{moneyFormatter(quantity)}</Text>
-
             </View>
-
-            
-        </View>
+        </Pressable>
     )
 }
 

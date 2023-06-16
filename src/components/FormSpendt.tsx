@@ -1,39 +1,64 @@
 import { View, Text, Pressable, TextInput, StyleSheet } from 'react-native'
-import React, { useState } from 'react'
+import React, { useState, useEffect} from 'react'
 import { SafeAreaView} from 'react-native-safe-area-context'
 import { Categorys, FormNewSpendProps } from '../../interfaces'
 import { Picker } from '@react-native-picker/picker'
 import globalStyles from '../styles'
 
 export default function FormSpendt({
-    handleModal, handleSpendt
+    handleModal, handleSpendt, handleEditSpendt, spendt, handleDeleteSpendt
     }:FormNewSpendProps) {
         const [name, setName] = useState('')
         const [quantity, setQuantity] = useState('')
         const [category, setCategory] = useState<Categorys>('')
 
+        useEffect(() => {
+            if (spendt?.id) {
+                setName(spendt.name)
+                setQuantity(spendt.quantity.toString())
+                setCategory(spendt.category)
+            }
+        },[spendt])
+
+        const handleCancel = () => {
+            handleModal()
+            handleEditSpendt(false)
+        }
+
         const handleSubmit = () => {
             const newSpendt = {
                 name,
                 category,
-                quantity: Number(quantity)
+                quantity: Number(quantity),
+                id:spendt?.id,
+                date:spendt?.date
             }
             handleSpendt(newSpendt)
         }
 
+        const handleDelete = () => {
+            handleDeleteSpendt(spendt?.id)
+        }
+
         return (
             <SafeAreaView style={styles.container}>
-                <View>
+                <View style={styles.btnContainer}>
 
-                    <Pressable style={styles.btnCancel}
-                    onLongPress={handleModal}>
-                        <Text style={styles.btnCancelText}>Cancelar</Text>
+                    <Pressable style={[styles.btn, styles.btnCancel]}
+                    onPress={handleCancel}>
+                        <Text style={styles.btnText}>Cancelar</Text>
+                    </Pressable>
+
+                    <Pressable style={[styles.btnDelete, styles.btn]}
+                    onPress={handleDelete}>
+                        <Text style={styles.btnText}>Eliminar</Text>
                     </Pressable>
 
                 </View>
 
                 <View style={styles.form}>
-                    <Text style={styles.title}>Nuevo Gasto</Text>
+                    <Text style={styles.title}
+                    >{spendt?.id ? 'Editar Gasto' : 'Nuevo Gasto'}</Text>
 
                     <View style={styles.field}>
                         <Text style={styles.label}>Nombre Gasto</Text>
@@ -67,7 +92,8 @@ export default function FormSpendt({
 
                     <Pressable onPress={handleSubmit}
                     style={styles.btnSubmit}>
-                        <Text style={styles.btnSubmitText}>Agregar Gasto</Text>
+                        <Text style={styles.btnSubmitText}
+                        >{spendt?.id ? 'Actualizar Gasto' : 'Agregar Gasto'}</Text>
                     </Pressable>
                 </View>
 
@@ -102,6 +128,24 @@ const styles = StyleSheet.create({
         padding:10,
         borderRadius:10,
     },
+    btnContainer:{
+        flexDirection:'row',
+        justifyContent:'space-between'
+    },
+    btn:{
+        paddingHorizontal:10,
+        paddingVertical:15,
+        marginTop:20,
+        marginHorizontal:10,
+        borderRadius:10,
+        flex:1
+    },
+    btnText:{
+        fontWeight:'bold',
+        color:'#fff',
+        textAlign:'center',
+        textTransform:'uppercase'
+    },
     btnSubmit:{
         backgroundColor:'#516ecd',
         padding:12,
@@ -116,17 +160,8 @@ const styles = StyleSheet.create({
     },
     btnCancel:{
         backgroundColor: '#243a80',
-        paddingHorizontal:10,
-        paddingVertical:15,
-        marginTop:20,
-        marginHorizontal:10,
-        borderRadius:10
-
     },
-    btnCancelText:{
-        fontWeight:'bold',
-        color:'#fff',
-        textAlign:'center',
-        textTransform:'uppercase'
-    },
+    btnDelete:{
+        backgroundColor: '#b73453',
+    }
 })
