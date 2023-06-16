@@ -16,7 +16,7 @@ export default function BudgetControl({
         const totalAvailable = budget - totalSpendt
         setAvailable(totalAvailable)
         setSpendt(totalSpendt)
-    },[])
+    },[expenses])
 
         return (
         <View style={styles.container}>

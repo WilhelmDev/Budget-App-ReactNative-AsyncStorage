@@ -2,7 +2,7 @@ import { View, Text, StyleSheet, Image } from 'react-native'
 import React from 'react'
 import { SpendtItemProps } from '../../interfaces'
 import globalStyles from '../styles'
-import { moneyFormatter } from '../helpers'
+import { dateFormatter, moneyFormatter } from '../helpers'
 
 export default function SpendtItem({spendt}:SpendtItemProps) {
     const diccionary = {
@@ -16,7 +16,7 @@ export default function SpendtItem({spendt}:SpendtItemProps) {
         '': require('../img/icono_suscripciones.png'),
     }
 
-    const {name, quantity, id, category} = spendt
+    const {name, quantity, date, category} = spendt
     return (
         <View style={styles.container}>
             
@@ -29,6 +29,7 @@ export default function SpendtItem({spendt}:SpendtItemProps) {
 
                     <View style={styles.textContainer}>
                         <Text style={styles.nameSpendt}>{name}</Text>
+                        <Text style={styles.date}>{dateFormatter(date)}</Text>
                     </View>
 
                 </View>
@@ -68,7 +69,13 @@ const styles = StyleSheet.create({
     nameSpendt:{
         fontSize:22,
         color:'#64748B',
-        marginBottom:5
+        marginBottom:10
+    },
+    date:{
+        fontWeight:'700',
+        color:'#4e8ef6',
+        fontSize:15,
+        textTransform:'capitalize'
     },
     quantity:{
         fontSize:20,

@@ -23,3 +23,9 @@ export const iconDiccionary = {
     health: require('../img/icono_salud.png'),
     suscriptions: require('../img/icono_suscripciones.png'),
 }
+
+export function dateFormatter(date:number):string {
+    const newDate = new Date(date)
+    const dateFormated = newDate.toLocaleDateString('es-ES',{year:'numeric', month:'long', day:'numeric'})
+    return dateFormated
+}

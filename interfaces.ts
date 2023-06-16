@@ -4,7 +4,7 @@ export interface NewBudgetProps {
     handleNewBudget: newBudget;
 }
 
-export type Spendt = { id?:string ,name:string, quantity:number, category:Categorys}
+export type Spendt = { id?:string, date:number , name:string, quantity:number, category:Categorys}
 export type StateExpenses = Spendt[] | never
 export interface BudgetControlProps{
     budget:number,
@@ -17,7 +17,8 @@ export interface FormNewSpendProps {
     handleSpendt: (spend:Spendt) => void
 }
 export interface ListExpensesProps {
-    expenses:StateExpenses
+    expenses:StateExpenses,
+    handleModal:Handler
 }
 
 

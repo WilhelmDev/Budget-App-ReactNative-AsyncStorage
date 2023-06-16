@@ -44,6 +44,7 @@ export default function App() {
 
 		//*Sync State and close modal
 		spendt.id= idGenerator()
+		spendt.date= Date.now()
 		setExpenses([...expenses, spendt])
 		handleModal()
 	}
@@ -67,7 +68,7 @@ return (
 					</View>
 
 					{isValidBudget && (
-						<ListExpenses expenses={expenses} />
+						<ListExpenses expenses={expenses} handleModal={handleModal} />
 					)}
 
 			</ScrollView>
