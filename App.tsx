@@ -1,7 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import { useState, useEffect } from "react";
 import { Alert, Image, Modal, Pressable, ScrollView, StyleSheet, View } from 'react-native';
-import { Categorys, DeleteSpendtHandler, EditSpendtHandler, FilterHandler, StateExpenses, StateSpendt, newBudget } from './interfaces';
+import { Categorys, DeleteSpendtHandler, FilterHandler, ResetSpendtHandler, StateExpenses, StateSpendt, newBudget } from './interfaces';
 import {Spendt} from './interfaces'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import BudgetControl from './src/components/BudgetControl';
@@ -108,7 +108,7 @@ export default function App() {
 			spendt.id= idGenerator()
 			spendt.date= Date.now()
 			setExpenses([...expenses, spendt])
-			handleEditSpendt(false)
+			handleResetSpendt()
 		}
 
 		handleModal()
@@ -118,17 +118,16 @@ export default function App() {
 		setSpendt(spendt)
 	}
 
-	const handleEditSpendt:EditSpendtHandler = (edit, spendt) =>{ //todo Refactorizar Esta mierda
-		if(!edit) {
-			setSpendt({
-				name:'',
-				quantity:0,
-				category:'',
-				id: undefined,
-				date: undefined
-			})
-			return
-		}
+	const handleResetSpendt:ResetSpendtHandler = () =>{
+
+		setSpendt({
+			name:'',
+			quantity:0,
+			category:'',
+			id: undefined,
+			date: undefined
+		})
+		return
 	}
 
 	const handleDeleteSpendt:DeleteSpendtHandler = (id) => {
@@ -140,7 +139,7 @@ export default function App() {
 				const updatedExpenses = expenses.filter((arritem) => arritem.id !== id)
 				setExpenses(updatedExpenses)
 				handleModal()
-				handleEditSpendt(false)
+				handleResetSpendt()
 			}}])
 	}
 
@@ -208,7 +207,7 @@ return (
 				<Modal visible={modal} animationType='slide' onRequestClose={handleModal}
 				statusBarTranslucent={true}>
 					<FormSpendt handleModal={handleModal} spendt={spendt} handleDeleteSpendt={handleDeleteSpendt}
-					handleSpendt={handleSpendt} handleEditSpendt={handleEditSpendt}/>
+					handleSpendt={handleSpendt} handleResetSpendt={handleResetSpendt}/>
 				</Modal>
 			)}
 

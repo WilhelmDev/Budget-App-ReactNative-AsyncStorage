@@ -7,7 +7,7 @@ export type Categorys = '' | 'earns' | 'food' | 'house' | 'others' | 'hobbys' | 
 export type Handler = () => void;
 export type StateSpendt = Spendt;
 export type SetSpendtHandler = (spendt:Spendt) => void;
-export type EditSpendtHandler = (edit:boolean, spendt?:Spendt) => void
+export type ResetSpendtHandler = () => void
 export type DeleteSpendtHandler = (id:string | undefined) => void
 
 export type FilterHandler = (category:Categorys) => void
@@ -23,7 +23,7 @@ export interface BudgetControlProps{
 export interface FormNewSpendProps {
     handleModal: Handler,
     handleSpendt: (spend:Spendt) => void,
-    handleEditSpendt:EditSpendtHandler,
+    handleResetSpendt:ResetSpendtHandler,
     spendt:Spendt | undefined,
     handleDeleteSpendt:DeleteSpendtHandler
 }

@@ -6,7 +6,7 @@ import { Picker } from '@react-native-picker/picker'
 import globalStyles from '../styles'
 
 export default function FormSpendt({
-    handleModal, handleSpendt, handleEditSpendt, spendt, handleDeleteSpendt
+    handleModal, handleSpendt, handleResetSpendt, spendt, handleDeleteSpendt
     }:FormNewSpendProps) {
         const [name, setName] = useState('')
         const [quantity, setQuantity] = useState('')
@@ -22,7 +22,7 @@ export default function FormSpendt({
 
         const handleCancel = () => {
             handleModal()
-            handleEditSpendt(false)
+            handleResetSpendt()
         }
 
         const handleSubmit = () => {
