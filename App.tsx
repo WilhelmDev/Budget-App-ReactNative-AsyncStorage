@@ -155,6 +155,25 @@ export default function App() {
 		}
 	}
 
+	const resetApp = () => {
+		Alert.alert(
+			'¿Deseas reiniciar la app?',
+			'Esto eliminará los datos almacenados',
+			[
+				{text:'No', style:'cancel'},
+				{text:'Si, Eliminar', onPress: async () => {
+					try {
+						await AsyncStorage.clear()
+						setIsValidBudget(false);
+						setExpenses([]); setBudget(0)
+					} catch (error) {
+						console.log(error)
+					}
+				}}
+			]
+		)
+	}
+
 return (
 	<View style={styles.containerApp}>
 		<StatusBar style='auto' translucent={true}/>
@@ -168,7 +187,7 @@ return (
 						<Header />
 
 						{isValidBudget 
-						? <BudgetControl budget={budget} expenses={expenses}/>
+						? <BudgetControl budget={budget} expenses={expenses} resetApp={resetApp}/>
 						: <NewBudget handleNewBudget={handleNewBudget}/>}
 
 					</View>

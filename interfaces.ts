@@ -18,6 +18,7 @@ export interface NewBudgetProps {
 export interface BudgetControlProps{
     budget:number,
     expenses: never | Spendt[]
+    resetApp:Handler
 }
 export interface FormNewSpendProps {
     handleModal: Handler,

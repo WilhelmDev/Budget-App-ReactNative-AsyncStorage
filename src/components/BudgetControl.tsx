@@ -1,12 +1,12 @@
-import { View, Text, Image, StyleSheet } from 'react-native'
+import { View, Text, StyleSheet, Pressable } from 'react-native'
 import {useState, useEffect} from 'react'
-import globalStyles from '../styles'
 import { BudgetControlProps } from '../../interfaces'
 import { moneyFormatter } from '../helpers'
 import CircularProgress from 'react-native-circular-progress-indicator'
+import globalStyles from '../styles'
 
 export default function BudgetControl({
-    budget, expenses
+    budget, expenses, resetApp
     }:BudgetControlProps) {
 
     const [available, setAvailable] = useState(0)
@@ -37,6 +37,11 @@ export default function BudgetControl({
 
             <View style={styles.textContainer}>
 
+                <Pressable style={styles.btn}
+                onPress={resetApp}>
+                    <Text style={styles.textBtn}>Reiniciar App</Text>
+                </Pressable>
+
                 <Text style={styles.value}>
                     <Text style={styles.label}>Presupuesto: </Text>
                     {moneyFormatter(budget)}
@@ -63,10 +68,6 @@ const styles = StyleSheet.create({
     centerComp:{
         alignItems:'center'
     },
-    img:{
-        height:250,
-        width:250
-    },
     textContainer:{
         marginTop:50
     },
@@ -78,5 +79,17 @@ const styles = StyleSheet.create({
     label:{
         fontWeight:'700',
         color:'#3b82f6'
-    }
+    },
+    btn:{
+        backgroundColor:'#f63b82',
+        padding:10,
+        marginBottom:30,
+        borderRadius:10
+    },
+    textBtn:{
+        textAlign:'center',
+        color: '#fff',
+        fontWeight:'bold',
+        textTransform:'uppercase'
+    },
 })
