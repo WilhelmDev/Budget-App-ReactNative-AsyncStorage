@@ -21,6 +21,8 @@ export default function ListExpenses({
             {expenses.length === 0 || (filterExpenses.length === 0 && !!filter)
             && (<Text style={styles.empyList}>No hay Gastos</Text>)
             }
+
+            {expenses.length === 0 && (<Text style={styles.empyList}>No hay Gastos</Text>)}
         </View>
     )
 }

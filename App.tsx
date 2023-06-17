@@ -1,13 +1,14 @@
 import { StatusBar } from 'expo-status-bar';
-import { useState } from "react";
-import { Alert, Image, Modal, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { useState, useEffect } from "react";
+import { Alert, Image, Modal, Pressable, ScrollView, StyleSheet, View } from 'react-native';
+import { Categorys, DeleteSpendtHandler, EditSpendtHandler, FilterHandler, StateExpenses, StateSpendt, newBudget } from './interfaces';
+import {Spendt} from './interfaces'
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import BudgetControl from './src/components/BudgetControl';
+import { idGenerator } from './src/helpers';
+import FormSpendt from './src/components/FormSpendt';
 import Header from './src/components/Header';
 import NewBudget from './src/components/NewBudget';
-import { Categorys, DeleteSpendtHandler, EditSpendtHandler, FilterHandler, StateExpenses, StateSpendt, newBudget } from './interfaces';
-import BudgetControl from './src/components/BudgetControl';
-import {Spendt} from './interfaces'
-import FormSpendt from './src/components/FormSpendt';
-import { idGenerator } from './src/helpers';
 import ListExpenses from './src/components/ListExpenses';
 import Filter from './src/components/Filter';
 
@@ -19,6 +20,59 @@ export default function App() {
 	const [spendt, setSpendt] = useState<StateSpendt>()
 	const [filter, setFilter] = useState<Categorys>('')
 	const [filterExpenses, setFilterExpenses] = useState<StateExpenses>([])
+
+	useEffect(() => { //* Verify if exists data in AsyncStorage
+		const getBudgetStorage = async() => {
+			try {
+				const budgetStorage = await AsyncStorage.getItem('planner_budget') ?? 0
+				if (Number(budgetStorage) > 0) {
+					setBudget(Number(budgetStorage))
+					setIsValidBudget(true)
+				}
+				return
+			} catch (error) {
+				console.log(error)
+			}
+		}
+		getBudgetStorage()
+	},[])
+
+	useEffect(()=> {//* saving the budget in AsyncStorage
+		if (isValidBudget) {
+			const saveBudgetStorage = async() => {
+				try {
+					await AsyncStorage.setItem('planner_budget', JSON.stringify(budget))
+				} catch (error) {
+					console.log(error)
+				}
+			}
+	
+			saveBudgetStorage()
+		}
+	},[isValidBudget])
+
+	useEffect(() => {//* Verify if exist Expenses in AsyncStorage
+		const getExpensesStorage = async() => {
+			try {
+				const expensesStorage = await AsyncStorage.getItem('planner_expenses')
+				setExpenses( expensesStorage ? JSON.parse(expensesStorage) : [] )
+			} catch (error) {
+				console.log(error)
+			}
+		}
+		getExpensesStorage()
+	},[])
+
+	useEffect(() => {//* Save expenses in AsyncStorage
+		const saveExpensesStorage = async () => {
+			try {
+				await AsyncStorage.setItem('planner_expenses', JSON.stringify(expenses))
+			} catch (error) {
+				console.log(error)
+			}
+		}
+		saveExpensesStorage()
+	},[expenses])
 
 	const handleNewBudget:newBudget = (budget) => {
 		if (budget > 0) {
