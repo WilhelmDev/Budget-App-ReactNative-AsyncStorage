@@ -11,10 +11,14 @@ export default function BudgetControl({
 
     const [available, setAvailable] = useState(0)
     const [spendt, setSpendt] = useState(0)
+    const [percentage, setPercentage] = useState(0)
 
     useEffect(() => {
         const totalSpendt = expenses.reduce( (total, gasto) => gasto.quantity + total, 0)
         const totalAvailable = budget - totalSpendt
+        const newPercentage = ((budget - totalAvailable) / budget) * 100
+        
+        setPercentage(newPercentage)
         setAvailable(totalAvailable)
         setSpendt(totalSpendt)
     },[expenses])
@@ -22,7 +26,13 @@ export default function BudgetControl({
         return (
         <View style={styles.container}>
             <View style={styles.centerComp}>
-                <CircularProgress value={50}/>
+                <CircularProgress value={percentage} duration={1000}
+                radius={120} 
+                valueSuffix={'%'} 
+                title='Gastado' titleStyle={{fontWeight:'bold', fontSize:20}} titleColor='#64748b'
+                inActiveStrokeColor='#f5f5f5' inActiveStrokeWidth={20}
+                activeStrokeColor='#3b82f6' activeStrokeWidth={15}
+                />
             </View>
 
             <View style={styles.textContainer}>
