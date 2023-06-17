@@ -49,10 +49,12 @@ export default function FormSpendt({
                         <Text style={styles.btnText}>Cancelar</Text>
                     </Pressable>
 
-                    <Pressable style={[styles.btnDelete, styles.btn]}
-                    onPress={handleDelete}>
-                        <Text style={styles.btnText}>Eliminar</Text>
-                    </Pressable>
+                    {spendt?.id && (
+                        <Pressable style={[styles.btnDelete, styles.btn]}
+                            onPress={handleDelete}>
+                                <Text style={styles.btnText}>Eliminar</Text>
+                            </Pressable>
+                    )}
 
                 </View>
 

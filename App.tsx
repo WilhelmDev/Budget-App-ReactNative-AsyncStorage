@@ -3,12 +3,13 @@ import { useState } from "react";
 import { Alert, Image, Modal, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import Header from './src/components/Header';
 import NewBudget from './src/components/NewBudget';
-import { DeleteSpendtHandler, EditSpendtHandler, StateExpenses, StateSpendt, newBudget } from './interfaces';
+import { Categorys, DeleteSpendtHandler, EditSpendtHandler, FilterHandler, StateExpenses, StateSpendt, newBudget } from './interfaces';
 import BudgetControl from './src/components/BudgetControl';
 import {Spendt} from './interfaces'
 import FormSpendt from './src/components/FormSpendt';
 import { idGenerator } from './src/helpers';
 import ListExpenses from './src/components/ListExpenses';
+import Filter from './src/components/Filter';
 
 export default function App() {
 	const [isValidBudget, setIsValidBudget] = useState(false)
@@ -16,6 +17,8 @@ export default function App() {
 	const [expenses, setExpenses] = useState<StateExpenses>([])
 	const [modal, setModal] = useState(false)
 	const [spendt, setSpendt] = useState<StateSpendt>()
+	const [filter, setFilter] = useState<Categorys>('')
+	const [filterExpenses, setFilterExpenses] = useState<StateExpenses>([])
 
 	const handleNewBudget:newBudget = (budget) => {
 		if (budget > 0) {
@@ -61,7 +64,7 @@ export default function App() {
 		setSpendt(spendt)
 	}
 
-	const handleEditSpendt:EditSpendtHandler = (edit, spendt) =>{
+	const handleEditSpendt:EditSpendtHandler = (edit, spendt) =>{ //todo Refactorizar Esta mierda
 		if(!edit) {
 			setSpendt({
 				name:'',
@@ -87,6 +90,17 @@ export default function App() {
 			}}])
 	}
 
+	const handleFilter:FilterHandler = (category) => {
+		setFilter(category)
+
+		if (category === '') {
+			setFilterExpenses([])
+		} else {
+			const filterArray = expenses.filter((arrItem) => arrItem.category === category)
+			setFilterExpenses(filterArray)
+		}
+	}
+
 return (
 	<View style={styles.containerApp}>
 		<StatusBar style='auto' translucent={true}/>
@@ -106,8 +120,13 @@ return (
 					</View>
 
 					{isValidBudget && (
-						<ListExpenses expenses={expenses} handleModal={handleModal} handleSetSpendt={handleSetSpendt}/>
-					)}
+						<>
+							<Filter handleFilter={handleFilter} filter={filter}/>
+							<ListExpenses expenses={expenses} handleModal={handleModal} 
+							handleSetSpendt={handleSetSpendt}
+							filter={filter} filterExpenses={filterExpenses}/>
+						</>
+						)}
 
 			</ScrollView>
 
